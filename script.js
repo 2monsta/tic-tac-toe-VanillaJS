@@ -30,16 +30,19 @@ var gameOver = false;
 	//we change the vars for JS
 
 for(let i = 0; i<squares.length; i++){
+	
+	enterName();
 	// console.log(squares[i]); now thta we have each square indiviually, we will add a click listenr to it
-
 	squares[i].addEventListener("click", function(event){
 		// console.log(this);
 		// call the marksqure function and pass the square they clicked on
 		// only call marksquare if gameOver == false;
-		if(!gameOver){
+		// enterName();
+		if(!gameOver){ 
 			markSquare(this);
 		}
 	});
+	
 }
 
 
@@ -95,8 +98,6 @@ function endGame(winningCombo, whoJustMarked){
 function enterName(){
 	var getName = document.getElementById("submitName");
 	getName.addEventListener("click", function(event){
-		var x = document.getElementById("player-info").value;
-		console.log(x);
-		document.getElementById("player-name").innerHTML = x;
+		document.getElementById("player-name").innerHTML = document.getElementById("player-info").value;
 	});
 }
