@@ -42,6 +42,7 @@ for(let i = 0; i<squares.length; i++){
 	});
 }
 
+
 function markSquare(squareClick){
 	// console.log(squareClick.innerHTML);
 	if(squareClick.innerHTML !== "-"){
@@ -75,10 +76,27 @@ function checkWin(currentPlayer, whoJustMarked){
 		//end of j loop;
 		//check to see if the square count === 3;
 		if(squareCount ==3){
-			//winner winner chicken dinner!
-			console.log(`Player ${whoJustMarked} won the game`);
-			document.getElementById("message").innerHTML = `Congratz to ${whoJustMarked}!`
-			gameOver = true;
+			endGame(winningCombos[i], whoJustMarked);
+			break;
 		}
 	}
+}
+function endGame(winningCombo, whoJustMarked){
+	//winner winner chicken dinner!
+	console.log(`Player ${whoJustMarked} won the game`);
+	document.getElementById("message").innerHTML = `Congratz to ${whoJustMarked}!`
+	gameOver = true;
+	// anther thing we can do is loop through winning combo, and a class
+	for(let i =0; i < winningCombo.length; i++){
+		// add another class to the winning squares
+		document.getElementById(winningCombo[i]).className += " winning-square";
+	}
+}
+function enterName(){
+	var getName = document.getElementById("submitName");
+	getName.addEventListener("click", function(event){
+		var x = document.getElementById("player-info").value;
+		console.log(x);
+		document.getElementById("player-name").innerHTML = x;
+	});
 }

@@ -24,3 +24,10 @@ h1{
 	font-size: 40px;
 	min-height: 80px;
 }
+.winning-square{
+	background-color: lightgreen;
+	color: peachpuff;
+}
+.name-row{
+	margin-bottom: 20px;
+}
