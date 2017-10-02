@@ -23,27 +23,12 @@ var winningCombos = [
 	["C1", "B2", "A3"], /* diag2 */
 ]
 var gameOver = false;
+var gameStart = false;
+var getName = document.getElementById("submitName");
+getName.addEventListener("click", function(event){
+	document.getElementById("player-name").innerHTML = document.getElementById("player-info").value;
+});
 
-
-// two things happen when someone clicls
-	//we change the DOM(for theuser)
-	//we change the vars for JS
-
-for(let i = 0; i<squares.length; i++){
-	
-	enterName();
-	// console.log(squares[i]); now thta we have each square indiviually, we will add a click listenr to it
-	squares[i].addEventListener("click", function(event){
-		// console.log(this);
-		// call the marksqure function and pass the square they clicked on
-		// only call marksquare if gameOver == false;
-		// enterName();
-		if(!gameOver){ 
-			markSquare(this);
-		}
-	});
-	
-}
 
 
 function markSquare(squareClick){
@@ -94,10 +79,43 @@ function endGame(winningCombo, whoJustMarked){
 		// add another class to the winning squares
 		document.getElementById(winningCombo[i]).className += " winning-square";
 	}
+
+	reset(winningCombo);
 }
-function enterName(){
-	var getName = document.getElementById("submitName");
-	getName.addEventListener("click", function(event){
-		document.getElementById("player-name").innerHTML = document.getElementById("player-info").value;
+
+
+function reset(winningCombo){
+	gameOver = false;
+	var x = document.getElementById("reset");
+	x.addEventListener("click", function(event){
+		for(let i =0; i < winningCombo.length; i++){
+			// add another class to the winning squares
+			document.getElementById(winningCombo[i]).className = "square";
+		}
+		player1Squares = [];
+		player2Squares = [];
+		for(let i = 0; i<squares.length; i++){
+			squares[i].innerHTML = "-";
+		}
 	});
 }
+
+
+// two things happen when someone clicls
+	//we change the DOM(for theuser)
+	//we change the vars for JS
+for(let i = 0; i<squares.length; i++){
+	// console.log(squares[i]); now thta we have each square indiviually, we will add a click listenr to it
+	squares[i].addEventListener("click", function(event){
+	// console.log(this);
+	// call the marksqure function and pass the square they clicked on
+	// only call marksquare if gameOver == false;
+		if(!gameOver){ 
+			markSquare(this);
+		}
+	});
+
+}
+	
+
+
