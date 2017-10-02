@@ -20,3 +20,7 @@ h1{
 .square:hover{
 	background-color: yellow;
 }
+#message{
+	font-size: 40px;
+	min-height: 80px;
+}

@@ -3,6 +3,8 @@
 // means we need to keep track of who's turn it is
 // when x goes, it becomes o's turn, when 0 goes, it becomes x turns
 // check to see if someone won the game, if so, congratulate them, otherwise do nothing
+//hightlight the winning combo
+// game must stop if someone (cant keep clicking on them);
 
 // squares is an array with 9 objects each object, is theJS representation of the HTML tag
 // init whosTurn as player 1s turn
@@ -20,7 +22,7 @@ var winningCombos = [
 	["A1", "B2", "C3"], /* diag1 */
 	["C1", "B2", "A3"], /* diag2 */
 ]
-
+var gameOver = false;
 
 
 // two things happen when someone clicls
@@ -33,7 +35,10 @@ for(let i = 0; i<squares.length; i++){
 	squares[i].addEventListener("click", function(event){
 		// console.log(this);
 		// call the marksqure function and pass the square they clicked on
-		markSquare(this);
+		// only call marksquare if gameOver == false;
+		if(!gameOver){
+			markSquare(this);
+		}
 	});
 }
 
@@ -46,22 +51,23 @@ function markSquare(squareClick){
 		whosTurn =2;
 		player1Squares.push(squareClick.id);
 		document.getElementById("message").innerHTML= "";
+		checkWin(player1Squares, 1);
 	}else{
 		squareClick.innerHTML = "O";
 		whosTurn =1;
 		player2Squares.push(squareClick.id);
 		document.getElementById("message").innerHTML= "";
+		checkWin(player2Squares, 2);
 	}
-	checkWin();
 }
-function checkWin(){
+function checkWin(currentPlayer, whoJustMarked){
 	// outter loop - check each winning combination
 	for(let i = 0; i < winningCombos.length; i++){
 		// inner loop - check a square inside winning combos
 		var squareCount = 0; /* keep track of how many THIS winning combo the palyer has */
 		for(let j = 0; j < winningCombos[i].length; j++){
 			var winningSquare = winningCombos[i][j];
-			if(player1Squares.indexOf(winningSquare) !== -1){
+			if(currentPlayer.indexOf(winningSquare) !== -1){
 				// the square belongs to the player
 				squareCount++;
 			}
@@ -70,7 +76,9 @@ function checkWin(){
 		//check to see if the square count === 3;
 		if(squareCount ==3){
 			//winner winner chicken dinner!
-			console.log("Player1 won the game");
+			console.log(`Player ${whoJustMarked} won the game`);
+			document.getElementById("message").innerHTML = `Congratz to ${whoJustMarked}!`
+			gameOver = true;
 		}
 	}
 }
