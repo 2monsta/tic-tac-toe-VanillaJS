@@ -27,17 +27,17 @@ var p1Score = 0;
 var p2Score = 0;
 var numberOfPlayer = Number(prompt("Welcome to Tic-Tac-Toe\nEnter number of players (1 or 2)"));
 var playerOne = prompt("Enter your name");
+var playerTwo = "Computer";
 if(numberOfPlayer == 1){
 	// var getName = document.getElementById("submitName");
 	document.getElementById("player-name").innerHTML = playerOne +": ";
+	playerTwo;
 }
 if(numberOfPlayer == 2){
-	window.playerTwo = prompt("Enter 2nd Player name");
+	playerTwo = prompt("Enter 2nd Player name");
 	document.getElementById("player-name").innerHTML = playerOne +": ";
 	document.getElementById("computer").innerHTML = playerTwo + ": ";
 }
-
-
 
 
 function markSquare(squareClick){
@@ -50,6 +50,9 @@ function markSquare(squareClick){
 		player1Squares.push(squareClick.id);
 		document.getElementById("message").innerHTML= "";
 		checkWin(player1Squares, 1);
+		if(numberOfPlayer == 1 && !gameOver){
+			computerMove();
+		}
 	}else{
 		squareClick.innerHTML = "O";
 		whosTurn =1;
@@ -86,7 +89,7 @@ function endGame(winningCombo, whoJustMarked){
 		p1Score +=1;
 		document.getElementById("message").innerHTML = `Congratz to ${playerOne}!`;
 		document.getElementById("player-one-score").innerHTML = p1Score;
-	}else if(whoJustMarked ==2){
+	}else if(whoJustMarked == 2){
 		p2Score +=1;
 		document.getElementById("message").innerHTML = `Congratz to ${playerTwo}!`;
 		document.getElementById("player-two-score").innerHTML = p2Score;
@@ -143,10 +146,22 @@ function reset(winningCombo){
 // 	console.log(newArr);
 // }
 
+
+
+function computerMove(){
+	var squareFound = false;
+	while(!squareFound){
+		rand = Math.floor(Math.random()* 9);
+		var isTaken = squares[rand].innerHTML;
+		if(isTaken ==="-"){
+			squareFound = true;
+		}
+	}
+	markSquare(squares[rand])
+}
 // two things happen when someone clicls
 	//we change the DOM(for theuser)
 	//we change the vars for JS
-// startingGame();
 for(let i = 0; i<squares.length; i++){
 	// console.log(squares[i]); now thta we have each square indiviually, we will add a click listenr to it
 	squares[i].addEventListener("click", function(event){
@@ -157,7 +172,6 @@ for(let i = 0; i<squares.length; i++){
 			markSquare(this);
 		}
 	});
-
 }
 	
 
