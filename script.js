@@ -10,7 +10,7 @@
 // init whosTurn as player 1s turn
 var squares = document.getElementsByClassName("square")
 var whosTurn = 1;
-var player1Squares = [];
+var player1Squares /* = user */ = [];
 var player2Squares = [];
 var winningCombos = [
 	["A1", "B1", "C1"], /* row1 */
@@ -23,11 +23,20 @@ var winningCombos = [
 	["C1", "B2", "A3"], /* diag2 */
 ]
 var gameOver = false;
-var gameStart = false;
-var getName = document.getElementById("submitName");
-getName.addEventListener("click", function(event){
-	document.getElementById("player-name").innerHTML = document.getElementById("player-info").value;
-});
+var p1Score = 0;
+var p2Score = 0;
+var numberOfPlayer = Number(prompt("Welcome to Tic-Tac-Toe\nEnter number of players (1 or 2)"));
+var playerOne = prompt("Enter your name");
+if(numberOfPlayer == 1){
+	// var getName = document.getElementById("submitName");
+	document.getElementById("player-name").innerHTML = playerOne +": ";
+}
+if(numberOfPlayer == 2){
+	window.playerTwo = prompt("Enter 2nd Player name");
+	document.getElementById("player-name").innerHTML = playerOne +": ";
+	document.getElementById("computer").innerHTML = playerTwo + ": ";
+}
+
 
 
 
@@ -45,6 +54,7 @@ function markSquare(squareClick){
 		squareClick.innerHTML = "O";
 		whosTurn =1;
 		player2Squares.push(squareClick.id);
+		// computerTurn();
 		document.getElementById("message").innerHTML= "";
 		checkWin(player2Squares, 2);
 	}
@@ -72,7 +82,15 @@ function checkWin(currentPlayer, whoJustMarked){
 function endGame(winningCombo, whoJustMarked){
 	//winner winner chicken dinner!
 	console.log(`Player ${whoJustMarked} won the game`);
-	document.getElementById("message").innerHTML = `Congratz to ${whoJustMarked}!`
+	if(whoJustMarked ==1){
+		p1Score +=1;
+		document.getElementById("message").innerHTML = `Congratz to ${playerOne}!`;
+		document.getElementById("player-one-score").innerHTML = p1Score;
+	}else if(whoJustMarked ==2){
+		p2Score +=1;
+		document.getElementById("message").innerHTML = `Congratz to ${playerTwo}!`;
+		document.getElementById("player-two-score").innerHTML = p2Score;
+	}
 	gameOver = true;
 	// anther thing we can do is loop through winning combo, and a class
 	for(let i =0; i < winningCombo.length; i++){
@@ -85,25 +103,50 @@ function endGame(winningCombo, whoJustMarked){
 
 
 function reset(winningCombo){
-	gameOver = false;
 	var x = document.getElementById("reset");
 	x.addEventListener("click", function(event){
-		for(let i =0; i < winningCombo.length; i++){
-			// add another class to the winning squares
-			document.getElementById(winningCombo[i]).className = "square";
-		}
-		player1Squares = [];
-		player2Squares = [];
-		for(let i = 0; i<squares.length; i++){
-			squares[i].innerHTML = "-";
+		if(player1Squares.length == 5){
+			gameOver = false;
+			player1Squares = [];
+			player2Squares = [];
+			for(let i = 0; i<squares.length; i++){
+				squares[i].innerHTML = "-";
+			}
+			document.getElementById("message").innerHTML = "It's a tie!";
+		}else{
+			gameOver = false;
+			document.getElementById("message").innerHTML = "";
+			for(let i =0; i < winningCombo.length; i++){
+				// add another class to the winning squares
+				document.getElementById(winningCombo[i]).className = "square";
+			}
+			player1Squares = [];
+			player2Squares = [];
+			for(let i = 0; i<squares.length; i++){
+				squares[i].innerHTML = "-";
+			}
 		}
 	});
 }
 
 
+// function computerTurn(){
+// 	var newArr = [];
+// 	for(let i = 0; i<player2Squares.length; i++){
+// 		for(let j = 0; j < player1Squares.length; j++){
+// 			if(player2Squares[i] !== player1Squares[j]){
+// 				newArr.push(player2Squares[i]);
+// 			}
+// 		}
+// 	}
+
+// 	console.log(newArr);
+// }
+
 // two things happen when someone clicls
 	//we change the DOM(for theuser)
 	//we change the vars for JS
+// startingGame();
 for(let i = 0; i<squares.length; i++){
 	// console.log(squares[i]); now thta we have each square indiviually, we will add a click listenr to it
 	squares[i].addEventListener("click", function(event){
