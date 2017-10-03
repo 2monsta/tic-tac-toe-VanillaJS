@@ -81,6 +81,13 @@ function checkWin(currentPlayer, whoJustMarked){
 			break;
 		}
 	}
+	var a = player1Squares.length;
+	var b = player2Squares.length;
+	var y = a + b;
+	if(y ==9){
+		document.getElementById("message").innerHTML = "It's a tie!"
+		reset();
+	}
 }
 function endGame(winningCombo, whoJustMarked){
 	//winner winner chicken dinner!
@@ -101,51 +108,23 @@ function endGame(winningCombo, whoJustMarked){
 		document.getElementById(winningCombo[i]).className += " winning-square";
 	}
 
-	reset(winningCombo);
+	reset();
 }
 
 
-function reset(winningCombo){
+function reset(){
 	var x = document.getElementById("reset");
 	x.addEventListener("click", function(event){
-		if(player1Squares.length == 5){
-			gameOver = false;
-			player1Squares = [];
-			player2Squares = [];
-			for(let i = 0; i<squares.length; i++){
-				squares[i].innerHTML = "-";
-			}
-			document.getElementById("message").innerHTML = "It's a tie!";
-		}else{
-			gameOver = false;
-			document.getElementById("message").innerHTML = "";
-			for(let i =0; i < winningCombo.length; i++){
-				// add another class to the winning squares
-				document.getElementById(winningCombo[i]).className = "square";
-			}
-			player1Squares = [];
-			player2Squares = [];
-			for(let i = 0; i<squares.length; i++){
-				squares[i].innerHTML = "-";
-			}
+		gameOver = false;
+		document.getElementById("message").innerHTML = "";
+		player1Squares = [];
+		player2Squares = [];
+		for(let i = 0; i<squares.length; i++){
+			squares[i].innerHTML = "-";
+			squares[i].className = "square";
 		}
 	});
 }
-
-
-// function computerTurn(){
-// 	var newArr = [];
-// 	for(let i = 0; i<player2Squares.length; i++){
-// 		for(let j = 0; j < player1Squares.length; j++){
-// 			if(player2Squares[i] !== player1Squares[j]){
-// 				newArr.push(player2Squares[i]);
-// 			}
-// 		}
-// 	}
-
-// 	console.log(newArr);
-// }
-
 
 
 function computerMove(){
