@@ -23,6 +23,7 @@ var winningCombos = [
 	["C1", "B2", "A3"], /* diag2 */
 ]
 var gameOver = false;
+var display = false;
 var p1Score = 0;
 var p2Score = 0;
 var numberOfPlayer = Number(prompt("Welcome to Tic-Tac-Toe\nEnter number of players (1 or 2)"));
@@ -69,6 +70,7 @@ function markSquare(squareClick){
 }
 function checkWin(currentPlayer, whoJustMarked){
 	// outter loop - check each winning combination
+	
 	for(let i = 0; i < winningCombos.length; i++){
 		// inner loop - check a square inside winning combos
 		var squareCount = 0; /* keep track of how many THIS winning combo the palyer has */
@@ -85,28 +87,36 @@ function checkWin(currentPlayer, whoJustMarked){
 			endGame(winningCombos[i], whoJustMarked);
 			break;
 		}
+		var a = player1Squares.length;
+		var b = player2Squares.length;
+		var y = a + b;
+		if(y == 9 && squareCount !==3 ){
+			document.getElementById("message").innerHTML = "It's a tie!"
+			reset();
+		}
 	}
-	var a = player1Squares.length;
-	var b = player2Squares.length;
-	var y = a + b;
-	if(y ==9){
-		document.getElementById("message").innerHTML = "It's a tie!"
-		reset();
-	}
+	// var a = player1Squares.length;
+	// var b = player2Squares.length;
+	// var y = a + b;
+	// if(y == 9 ){
+	// 	document.getElementById("message").innerHTML = "It's a tie!"
+	// 	reset();
+	// }
 }
 function endGame(winningCombo, whoJustMarked){
 	//winner winner chicken dinner!
 	console.log(`Player ${whoJustMarked} won the game`);
 	if(whoJustMarked ==1){
 		p1Score +=1;
-		document.getElementById("message").innerHTML = `Congratz to ${playerOne}!`;
-		document.getElementById("player-one-score").innerHTML = p1Score;
+		$("#message").html(`Congratz to ${playerOne}!`);
+		$("#player-one-score").html(p1Score);
 	}else if(whoJustMarked == 2){
 		p2Score +=1;
-		document.getElementById("message").innerHTML = `Congratz to ${playerTwo}!`;
+		$("#message").html(`Congratz to ${playerTwo}!`);
 		document.getElementById("player-two-score").innerHTML = p2Score;
 	}
 	gameOver = true;
+	display = true;
 	// anther thing we can do is loop through winning combo, and a class
 	for(let i =0; i < winningCombo.length; i++){
 		// add another class to the winning squares
@@ -129,8 +139,6 @@ function reset(){
 		}
 	});
 }
-
-
 function computerMove(){
 	var squareFound = false;
 	while(!squareFound){
@@ -142,6 +150,15 @@ function computerMove(){
 	}
 	markSquare(squares[rand])
 }
+function countDown(){
+	if(time < 0){
+		$("#message").html("Times Up! You lose!");
+	}else{
+		var count = time--;
+		$("#message").html(count);
+	}
+}
+
 // two things happen when someone clicls
 	//we change the DOM(for theuser)
 	//we change the vars for JS
@@ -157,18 +174,12 @@ for(let i = 0; i<squares.length; i++){
 	});
 }
 
-function countDown(){
-	if(time < 0){
-		$("#message").html("Times Up! You lose!");
-	}else{
-		var count = time--;
-		$("#message").html(count);
-	}
-}
-	
 setInterval(function(){
-	countDown();
+	if(display == false && !gameOver){
+		countDown();
+	}
 }, 1000);
+
 
 
 
