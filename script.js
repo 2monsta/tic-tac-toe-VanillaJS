@@ -8,7 +8,9 @@
 
 // squares is an array with 9 objects each object, is theJS representation of the HTML tag
 // init whosTurn as player 1s turn
-var squares = document.getElementsByClassName("square")
+// var squares = document.getElementsByClassName("square");
+var squares = $(".square")
+console.log(squares);
 var whosTurn = 1;
 var player1Squares /* = user */ = [];
 var player2Squares = [];
@@ -26,20 +28,23 @@ var gameOver = false;
 var display = false;
 var p1Score = 0;
 var p2Score = 0;
-var numberOfPlayer = Number(prompt("Welcome to Tic-Tac-Toe\nEnter number of players (1 or 2)"));
-var playerOne = prompt("Enter your name");
-var playerTwo = "Computer";
+// var numberOfPlayer = Number(prompt("Welcome to Tic-Tac-Toe\nEnter number of players (1 or 2)"));
+var numberOfPlayer = 2;
+// var playerOne = prompt("Enter your name");
+var playerOne = "hi"
+// var playerTwo = "Computer";
+var playerTwo = "computer"
 var time = 10;
-if(numberOfPlayer == 1){
-	// var getName = document.getElementById("submitName");
-	document.getElementById("player-name").innerHTML = playerOne +": ";
-	playerTwo;
-}
-if(numberOfPlayer == 2){
-	playerTwo = prompt("Enter 2nd Player name");
-	document.getElementById("player-name").innerHTML = playerOne +": ";
-	document.getElementById("computer").innerHTML = playerTwo + ": ";
-}
+// if(numberOfPlayer == 1){
+// 	// var getName = document.getElementById("submitName");
+// 	$("#player-name").html(playerOne +": ");
+// 	playerTwo;
+// }
+// if(numberOfPlayer == 2){
+// 	playerTwo = prompt("Enter 2nd Player name");
+// 	$("#player-name").html(playerOne +": ");
+// 	$("#computer").html(playerTwo +": ");
+// }
 
 
 
@@ -48,23 +53,27 @@ if(numberOfPlayer == 2){
 
 function markSquare(squareClick){
 	// console.log(squareClick.innerHTML);
-	if(squareClick.innerHTML !== "-"){
-		document.getElementById("message").innerHTML=("Sorry, this square is taken!")
+	// if(squareClick.innerHTML !== "-"){
+	// 	$("#message").html("Sorry, this square is taken!");
+	if($(squareClick).html() !== "-"){
+		$("#message").html("Sorry, this square is taken!");
 	}else if(whosTurn ==1){
-		squareClick.innerHTML = "X";
+		// squareClick.innerHTML = "X";
+		$(squareClick).html("X");
 		whosTurn =2;
 		player1Squares.push(squareClick.id);
-		document.getElementById("message").innerHTML= "";
+		$("#message").html("");
 		checkWin(player1Squares, 1);
 		if(numberOfPlayer == 1 && !gameOver){
 			computerMove();
 		}
 	}else{
-		squareClick.innerHTML = "O";
+		// squareClick.innerHTML = "O";
+		$(squareClick).html("O");
 		whosTurn =1;
 		player2Squares.push(squareClick.id);
 		// computerTurn();
-		document.getElementById("message").innerHTML= "";
+		$("#message").html("");
 		checkWin(player2Squares, 2);
 	}
 }
@@ -91,7 +100,7 @@ function checkWin(currentPlayer, whoJustMarked){
 		var b = player2Squares.length;
 		var y = a + b;
 		if(y == 9 && squareCount !==3 ){
-			document.getElementById("message").innerHTML = "It's a tie!"
+			$("#message").html("It's a tie!");
 			reset();
 		}
 	}
@@ -113,24 +122,37 @@ function endGame(winningCombo, whoJustMarked){
 	}else if(whoJustMarked == 2){
 		p2Score +=1;
 		$("#message").html(`Congratz to ${playerTwo}!`);
-		document.getElementById("player-two-score").innerHTML = p2Score;
+		$("#player-two-score").html(p2Score);
 	}
 	gameOver = true;
 	display = true;
 	// anther thing we can do is loop through winning combo, and a class
 	for(let i =0; i < winningCombo.length; i++){
 		// add another class to the winning squares
-		document.getElementById(winningCombo[i]).className += " winning-square";
+		// document.getElementById(winningCombo[i]).className += " winning-square";
+		$(`#${winningCombo[i]}`).addClass("winning-square");
 	}
+
 	reset();
 }
 
 
 function reset(){
-	var x = document.getElementById("reset");
-	x.addEventListener("click", function(event){
+	// var x = document.getElementById("reset");
+	// x.addEventListener("click", function(event){
+	// 	gameOver = false;
+	// 	document.getElementById("message").innerHTML = "";
+	// 	player1Squares = [];
+	// 	player2Squares = [];
+	// 	for(let i = 0; i<squares.length; i++){
+	// 		squares[i].innerHTML = "-";
+	// 		squares[i].className = "square";
+	// 	}
+	// });
+
+	$("#reset").click((event)=>{
 		gameOver = false;
-		document.getElementById("message").innerHTML = "";
+		$("#message").html("");
 		player1Squares = [];
 		player2Squares = [];
 		for(let i = 0; i<squares.length; i++){
