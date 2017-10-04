@@ -28,6 +28,7 @@ var p2Score = 0;
 var numberOfPlayer = Number(prompt("Welcome to Tic-Tac-Toe\nEnter number of players (1 or 2)"));
 var playerOne = prompt("Enter your name");
 var playerTwo = "Computer";
+var time = 10;
 if(numberOfPlayer == 1){
 	// var getName = document.getElementById("submitName");
 	document.getElementById("player-name").innerHTML = playerOne +": ";
@@ -38,6 +39,10 @@ if(numberOfPlayer == 2){
 	document.getElementById("player-name").innerHTML = playerOne +": ";
 	document.getElementById("computer").innerHTML = playerTwo + ": ";
 }
+
+
+
+
 
 
 function markSquare(squareClick){
@@ -107,7 +112,6 @@ function endGame(winningCombo, whoJustMarked){
 		// add another class to the winning squares
 		document.getElementById(winningCombo[i]).className += " winning-square";
 	}
-
 	reset();
 }
 
@@ -152,6 +156,19 @@ for(let i = 0; i<squares.length; i++){
 		}
 	});
 }
+
+function countDown(){
+	if(time < 0){
+		$("#message").html("Times Up! You lose!");
+	}else{
+		var count = time--;
+		$("#message").html(count);
+	}
+}
 	
+setInterval(function(){
+	countDown();
+}, 1000);
+
 
 
