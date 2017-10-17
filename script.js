@@ -35,6 +35,7 @@ var playerOne = "hi"
 // var playerTwo = "Computer";
 var playerTwo = "computer"
 var time = 10;
+var timeUp = false;
 // if(numberOfPlayer == 1){
 // 	// var getName = document.getElementById("submitName");
 // 	$("#player-name").html(playerOne +": ");
@@ -52,29 +53,33 @@ var time = 10;
 
 
 function markSquare(squareClick){
-	// console.log(squareClick.innerHTML);
-	// if(squareClick.innerHTML !== "-"){
-	// 	$("#message").html("Sorry, this square is taken!");
-	if($(squareClick).html() !== "-"){
-		$("#message").html("Sorry, this square is taken!");
-	}else if(whosTurn ==1){
-		// squareClick.innerHTML = "X";
-		$(squareClick).html("X");
-		whosTurn =2;
-		player1Squares.push(squareClick.id);
-		$("#message").html("");
-		checkWin(player1Squares, 1);
-		if(numberOfPlayer == 1 && !gameOver){
-			computerMove();
-		}
+	if(timeUp){
+
 	}else{
-		// squareClick.innerHTML = "O";
-		$(squareClick).html("O");
-		whosTurn =1;
-		player2Squares.push(squareClick.id);
-		// computerTurn();
-		$("#message").html("");
-		checkWin(player2Squares, 2);
+			// console.log(squareClick.innerHTML);
+		// if(squareClick.innerHTML !== "-"){
+		// 	$("#message").html("Sorry, this square is taken!");
+		if($(squareClick).html() !== "-"){
+			$("#message").html("Sorry, this square is taken!");
+		}else if(whosTurn ==1){
+			// squareClick.innerHTML = "X";
+			$(squareClick).html("X");
+			whosTurn =2;
+			player1Squares.push(squareClick.id);
+			$("#message").html("");
+			checkWin(player1Squares, 1);
+			if(numberOfPlayer == 1 && !gameOver){
+				computerMove();
+			}
+		}else{
+			// squareClick.innerHTML = "O";
+			$(squareClick).html("O");
+			whosTurn =1;
+			player2Squares.push(squareClick.id);
+			// computerTurn();
+			$("#message").html("");
+			checkWin(player2Squares, 2);
+		}
 	}
 }
 function checkWin(currentPlayer, whoJustMarked){
@@ -101,7 +106,6 @@ function checkWin(currentPlayer, whoJustMarked){
 		var y = a + b;
 		if(y == 9 && squareCount !==3 ){
 			$("#message").html("It's a tie!");
-			reset();
 		}
 	}
 	// var a = player1Squares.length;
@@ -132,8 +136,6 @@ function endGame(winningCombo, whoJustMarked){
 		// document.getElementById(winningCombo[i]).className += " winning-square";
 		$(`#${winningCombo[i]}`).addClass("winning-square");
 	}
-
-	reset();
 }
 
 
@@ -150,17 +152,22 @@ function reset(){
 	// 	}
 	// });
 
-	$("#reset").click((event)=>{
-		gameOver = false;
-		$("#message").html("");
-		player1Squares = [];
-		player2Squares = [];
-		for(let i = 0; i<squares.length; i++){
-			squares[i].innerHTML = "-";
-			squares[i].className = "square";
-		}
-	});
+	gameOver = false;
+	$("#message").html("");
+	timeUp = false;
+	countDownTimer();
+	player1Squares = [];
+	player2Squares = [];
+	for(let i = 0; i<squares.length; i++){
+		squares[i].innerHTML = "-";
+		squares[i].className = "square";
+	}
+	time = 10;
 }
+
+$("#reset").click((event)=>{
+	reset();
+});
 function computerMove(){
 	var squareFound = false;
 	while(!squareFound){
@@ -172,13 +179,28 @@ function computerMove(){
 	}
 	markSquare(squares[rand])
 }
-function countDown(){
-	if(time < 0){
-		$("#message").html("Times Up! You lose!");
-	}else{
-		var count = time--;
-		$("#message").html(count);
-	}
+// function countDown(){
+// 	if(time < 0){
+// 		$("#message").html("Times Up! You lose!");
+// 		timeUp = true;
+// 	}else{
+// 		var count = time--;
+// 		$("#message").html(count);
+// 	}
+// }
+function countDownTimer(){
+	setInterval(function(){
+		if(display == false && !gameOver){
+			if(time < 0){
+				$("#message").html("Times Up! You lose!");
+				timeUp = true;
+				time = 0;
+			}else{
+				var count = time--;
+				$("#message").html(count);
+			}
+		}
+	}, 1000);
 }
 
 // two things happen when someone clicls
@@ -195,12 +217,7 @@ for(let i = 0; i<squares.length; i++){
 		}
 	});
 }
-
-setInterval(function(){
-	if(display == false && !gameOver){
-		countDown();
-	}
-}, 1000);
+countDownTimer();
 
 
 
